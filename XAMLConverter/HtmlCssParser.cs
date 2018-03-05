@@ -11,16 +11,12 @@
 namespace HTMLConverter
 {
     using System;
-    using System.Xml;
-    using System.Diagnostics;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
-    using System.IO;
+    using System.Xml;
 
-    using System.Windows; // DependencyProperty
-    using System.Windows.Documents; // TextElement
-  
     internal static class HtmlCssParser
     {
         // .................................................................
@@ -61,13 +57,13 @@ namespace HTMLConverter
                         switch (styleName)
                         {
                             case "font":
-                                // ParseCssFont(styleValue, localProperties);
+                                ParseCssFont(styleValue, localProperties);
                                 break;
                             case "font-family":
-                                // ParseCssFontFamily(styleValue, ref nextIndex, localProperties);
+                                ParseCssFontFamily(styleValue, ref nextIndex, localProperties);
                                 break;
                             case "font-size":
-                                // ParseCssSize(styleValue, ref nextIndex, localProperties, "font-size", /*mustBeNonNegative:*/true);
+                                ParseCssSize(styleValue, ref nextIndex, localProperties, "font-size", /*mustBeNonNegative:*/true);
                                 break;
                             case "font-style":
                                 ParseCssFontStyle(styleValue, ref nextIndex, localProperties);
@@ -79,7 +75,7 @@ namespace HTMLConverter
                                 ParseCssFontVariant(styleValue, ref nextIndex, localProperties);
                                 break;
                             case "line-height":
-                                // ParseCssSize(styleValue, ref nextIndex, localProperties, "line-height", /*mustBeNonNegative:*/true);
+                                ParseCssSize(styleValue, ref nextIndex, localProperties, "line-height", /*mustBeNonNegative:*/true);
                                 break;
                             case "word-spacing":
                                 //  Implement word-spacing conversion
@@ -88,7 +84,7 @@ namespace HTMLConverter
                                 //  Implement letter-spacing conversion
                                 break;
                             case "color":
-                                // ParseCssColor(styleValue, ref nextIndex, localProperties, "color");
+                                ParseCssColor(styleValue, ref nextIndex, localProperties, "color");
                                 break;
 
                             case "text-decoration":
@@ -294,6 +290,32 @@ namespace HTMLConverter
                     return number + unit;
                 }
             }
+            else
+            {
+                switch (styleValue)
+                {
+                    case "xxx-large":
+                        return "22";
+                    case "xx-large":
+                        return "20";
+                    case "x-large":
+                        return "18";
+                    case "large":
+                        return "16";
+                    case "medium":
+                        return "14";
+                    case "small":
+                        return "12";
+                    case "x-small":
+                        return "10";
+                    case "xx-small":
+                        return "8";
+                    case "xxx-small":
+                        return "6";
+                    default:
+                        break;
+                }
+            }
 
             return null;
         }
@@ -318,7 +340,7 @@ namespace HTMLConverter
                 "ghostwhite", "gold", "goldenrod", "gray", "green", "greenyellow", "honeydew", "hotpink", "indianred",
                 "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral",
                 "lightcyan", "lightgoldenrodyellow", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen",
-                "lightskyblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta", 
+                "lightskyblue", "lightslategray", "lightsteelblue", "lightyellow", "lime", "limegreen", "linen", "magenta",
                 "maroon", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue",
                 "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin",
                 "navajowhite", "navy", "oldlace", "olive", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod",
@@ -972,7 +994,7 @@ namespace HTMLConverter
             //  Add id processing for style selectors
             if (_styleDefinitions != null)
             {
-                for (int i = _styleDefinitions.Count - 1; i >= 0;  i--)
+                for (int i = _styleDefinitions.Count - 1; i >= 0; i--)
                 {
                     string selector = _styleDefinitions[i].Selector;
 

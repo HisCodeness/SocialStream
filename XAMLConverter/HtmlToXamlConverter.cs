@@ -11,15 +11,12 @@
 namespace HTMLConverter
 {
     using System;
-    using System.Xml;
-    using System.Diagnostics;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Text;
-    using System.IO;
-
+    using System.Diagnostics;
     using System.Windows; // DependencyProperty
     using System.Windows.Documents; // TextElement
+    using System.Xml;
 
     /// <summary>
     /// HtmlToXamlConverter is a static class that takes an HTML string
@@ -250,7 +247,7 @@ namespace HTMLConverter
                     case "table":
                         // hand off to table parsing function which will perform special table syntax checks
                         // DISABLE TABLES (it seems like they don't work most of the time)
-                        // AddTable(xamlParentElement, htmlElement, inheritedProperties, stylesheet, sourceContext);
+                         AddTable(xamlParentElement, htmlElement, inheritedProperties, stylesheet, sourceContext);
                         break;
 
                     case "tbody":
@@ -528,8 +525,8 @@ namespace HTMLConverter
                 switch (htmlElementName)
                 {
                     case "a":
-                        // DISABLE LINKS
-                        // AddHyperlink(xamlParentElement, htmlElement, inheritedProperties, stylesheet, sourceContext);
+                        // LINKS
+                        AddHyperlink(xamlParentElement, htmlElement, inheritedProperties, stylesheet, sourceContext);
                         AddSpanOrRun(xamlParentElement, htmlElement, inheritedProperties, stylesheet, sourceContext);
                         break;
                     case "img":
@@ -2037,14 +2034,13 @@ namespace HTMLConverter
                         break;
                     case "font-size":
                         //  Convert from css size into FontSize
-                        /* DISABLE FONT-SIZE
                         double length = 0;
                         if (!TryGetLengthValue((string)propertyEnumerator.Value, out length))
                         {
                             TryGetLengthValue(Xaml_FontSize_Medium, out length);
                         }
                         xamlElement.SetAttribute(Xaml_FontSize, length.ToString());
-                         */
+
                         break;
                     case "color":
                         SetPropertyValue(xamlElement, TextElement.ForegroundProperty, (string)propertyEnumerator.Value);
@@ -2058,7 +2054,7 @@ namespace HTMLConverter
                             if ((string)propertyEnumerator.Value == "true")
                             {
                                 // DISABLE UNDERLINES
-                                // xamlElement.SetAttribute(Xaml_TextDecorations, Xaml_TextDecorations_Underline);
+                                xamlElement.SetAttribute(Xaml_TextDecorations, Xaml_TextDecorations_Underline);
                             }
                         }
                         break;
@@ -2079,7 +2075,7 @@ namespace HTMLConverter
                         if (isBlock)
                         {
                             // DISABLE TEXT-INDENT
-                            // xamlElement.SetAttribute(Xaml_TextIndent, (string)propertyEnumerator.Value);
+                            xamlElement.SetAttribute(Xaml_TextIndent, (string)propertyEnumerator.Value);
                         }
                         break;
 
@@ -2243,7 +2239,7 @@ namespace HTMLConverter
                 }
             }
 
-            /*
+            
             // DISABLE MARGIN, PADDING, BORDERS
             if (isBlock)
             {
@@ -2268,7 +2264,7 @@ namespace HTMLConverter
                     ComposeThicknessProperty(xamlElement, Xaml_BorderThickness, borderThicknessLeft, borderThicknessRight, borderThicknessTop, borderThicknessBottom);
                 }
             }
-             */
+             
         }
 
         // Create syntactically optimized four-value Thickness
@@ -2386,8 +2382,8 @@ namespace HTMLConverter
                     localProperties["text-decoration-underline"] = "true";
                     break;
                 case "font":
-                    /*
-                    // DISABLE FONT ATTRIBUTES
+
+                    //  FONT ATTRIBUTES
                     string attributeValue = GetAttribute(htmlElement, "face");
                     if (attributeValue != null)
                     {
@@ -2407,8 +2403,7 @@ namespace HTMLConverter
                         }
                         localProperties["font-size"] = fontSize.ToString();
                     }
-                     */
-                    string attributeValue = GetAttribute(htmlElement, "color");
+                    attributeValue = GetAttribute(htmlElement, "color");
                     if (attributeValue != null)
                     {
                         localProperties["color"] = attributeValue;
